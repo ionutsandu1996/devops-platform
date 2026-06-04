@@ -1,0 +1,63 @@
+# docker-compose.yml — Local development environment
+# Starts 3 services: postgres, backend, frontend
+
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: devops-website-db
+    environment:
+      POSTGRES_DB:       devops_website
+      POSTGRES_USER:     devops_user
+      POSTGRES_PASSWORD: changeit
+    ports:
+      - "5432:5432"
+    volumes:
+      # Persistent volume — data survives container restarts
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devops_user -d devops_website"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Backend ─────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: devops-website-backend
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV:    development
+      DB_HOST:     postgres
+      DB_PORT:     5432
+      DB_NAME:     devops_website
+      DB_USER:     devops_user
+      DB_PASSWORD: changeit
+      JWT_SECRET:  dev-secret-change-in-production
+      JWT_EXPIRES_IN: 24h
+      PORT:        4000
+    depends_on:
+      postgres:
+        # Wait for postgres healthcheck before starting backend
+        condition: service_healthy
+    volumes:
+      # Mount source code for hot reload in development
+      - ./backend/src:/app/src
+
+  # ── Frontend ────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: devops-website-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
