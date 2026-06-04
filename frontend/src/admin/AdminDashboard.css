@@ -1,0 +1,160 @@
+/* ── LOADING ──────────────────────────────────────────────── */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    color: #94a3b8;
+    font-size: 18px;
+}
+
+/* ── DASHBOARD ────────────────────────────────────────────── */
+.admin-dashboard {
+    min-height: calc(100vh - 64px);
+    background-color: #0f172a;
+    padding: 48px 24px;
+}
+
+.admin-dashboard__container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ── HEADER ───────────────────────────────────────────────── */
+.admin-dashboard__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+.admin-dashboard__title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+}
+
+.admin-dashboard__subtitle {
+    color: #64748b;
+    font-size: 15px;
+}
+
+.admin-dashboard__logout {
+    background-color: transparent;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    font-family: inherit;
+}
+
+.admin-dashboard__logout:hover {
+    border-color: #f87171;
+    color: #f87171;
+}
+
+/* ── STATS ────────────────────────────────────────────────── */
+.admin-dashboard__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.admin-stat {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+}
+
+.admin-stat--alert {
+    border-color: rgba(251, 191, 36, 0.3);
+    background-color: rgba(251, 191, 36, 0.05);
+}
+
+.admin-stat__value {
+    display: block;
+    font-size: 40px;
+    font-weight: 800;
+    color: #38bdf8;
+    margin-bottom: 4px;
+}
+
+.admin-stat--alert .admin-stat__value {
+    color: #fbbf24;
+}
+
+.admin-stat__label {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ── NAV CARDS ────────────────────────────────────────────── */
+.admin-dashboard__nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.admin-nav-card {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    display: block;
+}
+
+.admin-nav-card:hover {
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+}
+
+.admin-nav-card__icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.admin-nav-card__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 8px;
+}
+
+.admin-nav-card__text {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.admin-nav-card__badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .admin-dashboard__stats { grid-template-columns: repeat(2, 1fr); }
+    .admin-dashboard__nav   { grid-template-columns: 1fr; }
+}
