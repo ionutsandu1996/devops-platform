@@ -384,7 +384,7 @@ helm rollback devops-website 1 -n devops-website
 **Ionut Sandu** — DevOps Engineer @ Deutsche Bank
 
 - GitHub: [@ionutsandu1996](https://github.com/ionutsandu1996)
-- LinkedIn: [ionut-sandu](https://linkedin.com/in/ionut-sandu)
+- LinkedIn: [ionut-sandu](https://ro.linkedin.com/in/ionuț-daniel-sandu-0b99a316b?trk=people-guest_people_search-card)
 
 ---
 
