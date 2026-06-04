@@ -56,7 +56,7 @@ app.get('/health', (req, res) => {
 app.use('/api/contact',  require('./routes/contact'));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/services', require('./routes/services'));
-// app.use('/api/admin',    require('./routes/admin'));
+app.use('/api/admin',    require('./routes/admin'));
 
 // ── 404 HANDLER ───────────────────────────────────────────────────────────────
 // If no route matched the request, return a clean 404
