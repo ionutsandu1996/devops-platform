@@ -53,7 +53,7 @@ app.get('/health', (req, res) => {
 // We will import and register routes here as we build them
 // Each route file handles one entity (contact, projects, services, admin)
 
-// app.use('/api/contact',  require('./routes/contact'));
+app.use('/api/contact',  require('./routes/contact'));
 // app.use('/api/projects', require('./routes/projects'));
 // app.use('/api/services', require('./routes/services'));
 // app.use('/api/admin',    require('./routes/admin'));
