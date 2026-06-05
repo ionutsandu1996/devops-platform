@@ -26,9 +26,12 @@ const app = express();
 
 // 1. CORS — allow requests from the frontend origin
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-    // Only allow requests from our frontend
-    // In production this will be your actual domain
+    origin: [
+        'http://localhost:5173',   // Vite dev server
+        'http://localhost',         // Docker Nginx
+        'http://localhost:80',      // Docker Nginx explicit
+        process.env.FRONTEND_URL,  // Production URL
+    ].filter(Boolean),
 }));
 
 // 2. JSON parser — allows us to read req.body as a JavaScript object
