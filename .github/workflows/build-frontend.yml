@@ -1,4 +1,4 @@
-name: Build and Push Frontend-≈
+name: Build and Push Frontend
 run-name: Build and push frontend image
 on:
   push:
