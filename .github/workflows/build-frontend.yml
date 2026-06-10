@@ -1,5 +1,5 @@
-name: Build and Push Frontend-${{ vars.BACKEND_VERSION }}
-
+name: Build and Push Frontend-≈
+run-name: Build and push frontend image
 on:
   push:
     branches:
