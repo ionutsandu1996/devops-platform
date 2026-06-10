@@ -36,13 +36,21 @@ jobs:
         id: version
         run: |
           CURRENT="${{ vars.FRONTEND_VERSION }}"
+          echo "Current version: $CURRENT"
+
+          if [ -z "$CURRENT" ]; then
+            echo "ERROR: FRONTEND_VERSION variable is empty!"
+            exit 1
+          fi
+
           MAJOR=$(echo $CURRENT | cut -d. -f1)
           MINOR=$(echo $CURRENT | cut -d. -f2)
           PATCH=$(echo $CURRENT | cut -d. -f3)
           NEW_PATCH=$((PATCH + 1))
           NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
-          echo "VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+
           echo "New version: $NEW_VERSION"
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
 
       - name: Set build metadata
         id: meta
@@ -59,6 +67,7 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/${{ github.repository }}/actions/variables/FRONTEND_VERSION \
             -d "{\"name\":\"FRONTEND_VERSION\",\"value\":\"${{ steps.version.outputs.VERSION }}\"}"
+          echo "✓ FRONTEND_VERSION updated to ${{ steps.version.outputs.VERSION }}"
 
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -74,7 +83,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
-          dockerfile: ./frontend/Dockerfile
+          file: ./frontend/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
@@ -83,7 +92,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # ── JOB 2 — SUMMARY ──────────────────────────────────────────
   summary:
     name: Build Summary
     runs-on: ubuntu-latest
@@ -92,15 +100,17 @@ jobs:
     steps:
       - name: Print build summary
         run: |
-          echo "╔══════════════════════════════════════════╗"
-          echo "║         FRONTEND BUILD SUMMARY           ║"
-          echo "╠══════════════════════════════════════════╣"
-          echo "║ Version:    ${{ needs.build-and-push.outputs.version }}"
-          echo "║ Image:      ${{ needs.build-and-push.outputs.image }}"
-          echo "║ Dockerfile: ${{ needs.build-and-push.outputs.dockerfile }}"
-          echo "║ Context:    ${{ needs.build-and-push.outputs.context }}"
-          echo "║ Registry:   ghcr.io"
-          echo "║ Commit:     ${{ github.sha }}"
-          echo "║ Branch:     ${{ github.ref_name }}"
-          echo "║ Triggered:  ${{ github.actor }}"
-          echo "╚══════════════════════════════════════════╝"
+          echo "## 🌐 Frontend Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Version** | \`${{ needs.build-and-push.outputs.version }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Image** | \`${{ needs.build-and-push.outputs.image }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Dockerfile** | \`${{ needs.build-and-push.outputs.dockerfile }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Context** | \`${{ needs.build-and-push.outputs.context }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Registry** | \`ghcr.io\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Branch** | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Triggered by** | \`${{ github.actor }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Image pushed to GHCR successfully!" >> $GITHUB_STEP_SUMMARY
