@@ -101,15 +101,17 @@ jobs:
     steps:
       - name: Print build summary
         run: |
-          echo "╔══════════════════════════════════════════╗"
-          echo "║         BACKEND BUILD SUMMARY            ║"
-          echo "╠══════════════════════════════════════════╣"
-          echo "║ Version:    ${{ needs.build-and-push.outputs.version }}"
-          echo "║ Image:      ${{ needs.build-and-push.outputs.image }}"
-          echo "║ Dockerfile: ${{ needs.build-and-push.outputs.dockerfile }}"
-          echo "║ Context:    ${{ needs.build-and-push.outputs.context }}"
-          echo "║ Registry:   ghcr.io"
-          echo "║ Commit:     ${{ github.sha }}"
-          echo "║ Branch:     ${{ github.ref_name }}"
-          echo "║ Triggered:  ${{ github.actor }}"
-          echo "╚══════════════════════════════════════════╝"
+          echo "## 🚀 Backend Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Version** | \`${{ needs.build-and-push.outputs.version }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Image** | \`${{ needs.build-and-push.outputs.image }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Dockerfile** | \`${{ needs.build-and-push.outputs.dockerfile }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Context** | \`${{ needs.build-and-push.outputs.context }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Registry** | \`ghcr.io\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Branch** | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Triggered by** | \`${{ github.actor }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Image pushed to GHCR successfully!" >> $GITHUB_STEP_SUMMARY
