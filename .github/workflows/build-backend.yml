@@ -21,7 +21,6 @@ jobs:
       contents: read
       packages: write
 
-    # Define outputs — these are passed to the next job
     outputs:
       version:    ${{ steps.version.outputs.VERSION }}
       image:      ${{ steps.meta.outputs.IMAGE }}
@@ -37,15 +36,23 @@ jobs:
         id: version
         run: |
           CURRENT="${{ vars.BACKEND_VERSION }}"
+          echo "Current version: $CURRENT"
+
+          # Validate that version is not empty
+          if [ -z "$CURRENT" ]; then
+            echo "ERROR: BACKEND_VERSION variable is empty!"
+            exit 1
+          fi
+
           MAJOR=$(echo $CURRENT | cut -d. -f1)
           MINOR=$(echo $CURRENT | cut -d. -f2)
           PATCH=$(echo $CURRENT | cut -d. -f3)
           NEW_PATCH=$((PATCH + 1))
           NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
-          echo "VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "New version: $NEW_VERSION"
 
-      # Collect metadata about the build
+          echo "New version: $NEW_VERSION"
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+
       - name: Set build metadata
         id: meta
         run: |
@@ -61,6 +68,7 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/${{ github.repository }}/actions/variables/BACKEND_VERSION \
             -d "{\"name\":\"BACKEND_VERSION\",\"value\":\"${{ steps.version.outputs.VERSION }}\"}"
+          echo "✓ BACKEND_VERSION updated to ${{ steps.version.outputs.VERSION }}"
 
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -76,7 +84,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./backend
-          dockerfile: ./backend/Dockerfile
+          file: ./backend/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
@@ -85,12 +93,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # ── JOB 2 — SUMMARY ──────────────────────────────────────────
   summary:
     name: Build Summary
     runs-on: ubuntu-latest
-
-    # This job runs only after build-and-push completes successfully
     needs: build-and-push
 
     steps:
