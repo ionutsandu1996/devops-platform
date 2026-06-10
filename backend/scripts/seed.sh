@@ -25,4 +25,4 @@ seed()
 
 # ── START SERVER ──────────────────────────────────────────────────────────────
 echo "→ Starting server..."
-exec node src/index.jsd
+exec node src/index.js
