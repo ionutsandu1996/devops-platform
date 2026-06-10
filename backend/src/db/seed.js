@@ -88,3 +88,14 @@ async function seed() {
 }
 
 module.exports = seed;
+
+// Run directly if called from command line
+// node src/db/seed.js or entrypoint.sh
+if (require.main === module) {
+    seed()
+        .then(() => process.exit(0))
+        .catch((err) => {
+            console.error(err);
+            process.exit(1);
+        });
+}

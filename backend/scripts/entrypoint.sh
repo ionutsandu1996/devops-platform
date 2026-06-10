@@ -4,7 +4,7 @@
 # 2. Seeds initial data
 # 3. Starts the Node.js server
 
-set -e  # Exit immediately if any command fails
+set -e
 
 echo "🚀 Starting DevOps Website Backend..."
 echo ""
@@ -15,7 +15,7 @@ node src/db/migrate.js
 
 # ── SEED ──────────────────────────────────────────────────────────────────────
 echo "→ Seeding initial data..."
-sh scripts/seed.sh
+node src/db/seed.js
 
 # ── START SERVER ──────────────────────────────────────────────────────────────
 echo "→ Starting server..."

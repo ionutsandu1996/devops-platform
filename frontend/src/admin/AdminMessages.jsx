@@ -74,8 +74,11 @@ function AdminMessages() {
                                 <div className="message-card__header">
                                     <div className="message-card__meta">
                                         <span className="message-card__name">{msg.name}</span>
-                                        <span className="message-card__email">{msg.email}</span>
-                                        {!msg.is_read && (
+                                      <a  href={`mailto:${msg.email}?subject=Re: ${msg.subject || 'Your message'}&body=Hi ${msg.name},%0D%0A%0D%0A`}
+                                        className="message-card__email"
+>
+    {msg.email}
+</a>                                        {!msg.is_read && (
                                             <span className="message-card__badge">New</span>
                                         )}
                                     </div>

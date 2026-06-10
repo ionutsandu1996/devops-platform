@@ -4,9 +4,11 @@
 // Import the Pool class from the official PostgreSQL driver for Node.js
 const { Pool } = require('pg');
 
-// Load environment variables from .env file
-// Must be called before accessing any process.env values
-require('dotenv').config();
+// Load .env file only in development
+// In Docker, environment variables are injected by docker-compose.yml
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 
 // Create the connection pool instance
 // A pool maintains multiple open connections to the database

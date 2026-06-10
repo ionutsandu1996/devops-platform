@@ -178,3 +178,14 @@
     .admin-messages__title  { font-size: 24px; }
     .message-card__header   { flex-direction: column; }
 }
+
+.message-card__email {
+    color: #38bdf8;
+    font-size: 14px;
+    transition: opacity 0.2s;
+}
+
+.message-card__email:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
