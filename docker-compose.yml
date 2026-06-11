@@ -49,6 +49,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_URL: /api
+        BACKEND_HOST: backend
     container_name: devops-website-frontend
     ports:
       - "80:80"
