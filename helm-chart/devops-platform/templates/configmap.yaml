@@ -1,0 +1,27 @@
+# configmap.yaml — Non-sensitive configuration for the backend
+# Sensitive data (passwords, tokens) goes in secret.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "devops-platform.fullname" . }}-config
+  labels:
+    {{- include "devops-platform.labels" . | nindent 4 }}
+data:
+  # Node.js environment
+  NODE_ENV: {{ .Values.backend.env.nodeEnv | quote }}
+
+  # Database connection — non-sensitive fields only
+  DB_HOST: {{ include "devops-platform.fullname" . }}-postgres
+  DB_PORT: {{ .Values.postgres.port | quote }}
+  DB_NAME: {{ .Values.postgres.database | quote }}
+  DB_USER: {{ .Values.postgres.user | quote }}
+
+  # JWT expiry — not sensitive
+  JWT_EXPIRES_IN: {{ .Values.backend.env.jwtExpiresIn | quote }}
+
+  # Backend port
+  PORT: {{ .Values.backend.port | quote }}
+
+  # Resend — non-sensitive fields
+  RESEND_FROM: {{ .Values.secrets.resendFrom | quote }}
+  ADMIN_EMAIL: {{ .Values.secrets.adminEmail | quote }}

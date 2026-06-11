@@ -1,0 +1,63 @@
+# deployment-backend.yaml — Backend Node.js deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "devops-platform.fullname" . }}-backend
+  labels:
+    {{- include "devops-platform.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "devops-platform.backendLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "devops-platform.backendLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: backend
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.backend.port }}
+              protocol: TCP
+
+          # ── ENV FROM CONFIGMAP AND SECRET ──────────────────
+          # ConfigMap contains non-sensitive config
+          # Secret is applied separately with kubectl apply -f helm/secret.yaml
+          envFrom:
+            - configMapRef:
+                name: {{ include "devops-platform.fullname" . }}-config
+            - secretRef:
+                name: devops-platform-secret
+
+          # ── READINESS PROBE ────────────────────────────────
+          # Pod receives traffic only when /health returns 200
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.backend.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+
+          # ── LIVENESS PROBE ─────────────────────────────────
+          # Pod is restarted if /health stops responding
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.backend.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
+
+          # ── RESOURCES ──────────────────────────────────────
+          # requests = guaranteed, limits = maximum allowed
+          resources:
+            requests:
+              cpu: {{ .Values.backend.resources.requests.cpu }}
+              memory: {{ .Values.backend.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.backend.resources.limits.cpu }}
+              memory: {{ .Values.backend.resources.limits.memory }}

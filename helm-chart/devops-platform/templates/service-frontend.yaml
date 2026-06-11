@@ -1,0 +1,18 @@
+# service-frontend.yaml — Exposes the frontend Nginx inside the cluster
+# ClusterIP = only accessible within the cluster
+# Ingress routes /* traffic to this service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "devops-platform.fullname" . }}-frontend
+  labels:
+    {{- include "devops-platform.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "devops-platform.frontendLabels" . | nindent 4 }}
+  ports:
+    - port: {{ .Values.frontend.port }}
+      targetPort: {{ .Values.frontend.port }}
+      protocol: TCP
+      name: http

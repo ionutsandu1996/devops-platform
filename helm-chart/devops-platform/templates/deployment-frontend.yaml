@@ -1,0 +1,52 @@
+# deployment-frontend.yaml — Frontend React + Nginx deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "devops-platform.fullname" . }}-frontend
+  labels:
+    {{- include "devops-platform.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "devops-platform.frontendLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "devops-platform.frontendLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.frontend.port }}
+              protocol: TCP
+
+          # ── READINESS PROBE ────────────────────────────────
+          # Nginx serves / when ready
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.frontend.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+
+          # ── LIVENESS PROBE ─────────────────────────────────
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.frontend.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            failureThreshold: 3
+
+          # ── RESOURCES ──────────────────────────────────────
+          resources:
+            requests:
+              cpu: {{ .Values.frontend.resources.requests.cpu }}
+              memory: {{ .Values.frontend.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.frontend.resources.limits.cpu }}
+              memory: {{ .Values.frontend.resources.limits.memory }}
