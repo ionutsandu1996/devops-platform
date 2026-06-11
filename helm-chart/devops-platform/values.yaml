@@ -1,0 +1,58 @@
+# ── BACKEND ───────────────────────────────────────────────────
+backend:
+  image:
+    repository: ghcr.io/ionutsandu1996/devops-platform-backend
+    tag: "latest"
+    pullPolicy: Always
+  replicaCount: 1
+  port: 4000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  env:
+    nodeEnv: production
+    jwtExpiresIn: 24h
+
+# ── FRONTEND ──────────────────────────────────────────────────
+frontend:
+  image:
+    repository: ghcr.io/ionutsandu1996/devops-platform-frontend
+    tag: "latest"
+    pullPolicy: Always
+  replicaCount: 1
+  port: 80
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+# ── POSTGRESQL ────────────────────────────────────────────────
+postgres:
+  image: postgres:15-alpine
+  port: 5432
+  database: devops_website
+  user: devops_user
+  storageSize: 1Gi
+
+# ── INGRESS ───────────────────────────────────────────────────
+ingress:
+  enabled: true
+  host: devops-platform.local
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+# ── SECRETS ───────────────────────────────────────────────────
+# These are overridden at deploy time with --set
+secrets:
+  dbPassword: changeit
+  jwtSecret: change-me-in-production
+  resendApiKey: ""
+  adminEmail: ionutdanielsandu96@gmail.com
+  resendFrom: onboarding@resend.dev
