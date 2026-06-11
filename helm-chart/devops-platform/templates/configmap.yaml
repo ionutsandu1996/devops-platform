@@ -11,7 +11,8 @@ data:
   NODE_ENV: {{ .Values.backend.env.nodeEnv | quote }}
 
   # Database connection — non-sensitive fields only
-  DB_HOST: {{ include "devops-platform.fullname" . }}-postgres
+  # Bitnami PostgreSQL service name: <release-name>-postgresql
+  DB_HOST: {{ .Release.Name }}-postgresql
   DB_PORT: {{ .Values.postgres.port | quote }}
   DB_NAME: {{ .Values.postgres.database | quote }}
   DB_USER: {{ .Values.postgres.user | quote }}

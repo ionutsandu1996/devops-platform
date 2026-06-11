@@ -15,6 +15,8 @@ spec:
       labels:
         {{- include "devops-platform.backendLabels" . | nindent 8 }}
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: backend
           image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"

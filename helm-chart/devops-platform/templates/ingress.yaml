@@ -1,0 +1,47 @@
+# ingress.yaml — Routes external traffic to frontend and backend services
+# /* → frontend service
+# /api/* → backend service
+# /health → backend service
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "devops-platform.fullname" . }}-ingress
+  labels:
+    {{- include "devops-platform.labels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+
+          # ── API routes → backend ──────────────────────────
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "devops-platform.fullname" . }}-backend
+                port:
+                  number: {{ .Values.backend.port }}
+
+          # ── Health check → backend ────────────────────────
+          - path: /health
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "devops-platform.fullname" . }}-backend
+                port:
+                  number: {{ .Values.backend.port }}
+
+          # ── Everything else → frontend ────────────────────
+          # Must be last — acts as catch-all
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "devops-platform.fullname" . }}-frontend
+                port:
+                  number: {{ .Values.frontend.port }}
+{{- end }}
