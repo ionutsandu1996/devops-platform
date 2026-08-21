@@ -13,6 +13,13 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
+    # index.html points to hashed JS/CSS bundles and must always be refreshed.
+    # Otherwise a browser can keep loading an old bundle with obsolete API URLs.
+    location = /index.html {
+        add_header Cache-Control "no-store, no-cache, must-revalidate" always;
+        expires -1;
+    }
+
     # SPA fallback — required for React Router
     # Without this, refreshing /projects returns 404
     # try_files: look for exact file, then directory, then serve index.html

@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000/api',
+    // Keep browser requests on the same origin. Nginx/Ingress proxies /api
+    // to the backend, so the browser never needs direct access to port 4000.
+    baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
 api.interceptors.request.use((config) => {

@@ -21,7 +21,7 @@ backend:
 frontend:
   image:
     repository: ghcr.io/ionutsandu1996/devops-platform-frontend
-    tag: "1.0.8"
+    tag: "k8s"
     pullPolicy: Always
   replicaCount: 1
   port: 80
@@ -45,8 +45,7 @@ postgres:
 ingress:
   enabled: true
   host: devops-platform.local
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  annotations: {}
 
 # ── SECRETS ───────────────────────────────────────────────────
 # These are overridden at deploy time with --set
