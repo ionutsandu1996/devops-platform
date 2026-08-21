@@ -29,7 +29,7 @@ async function seed() {
                 ($16, $17, $18, $19, $20),
                 ($21, $22, $23, $24, $25),
                 ($26, $27, $28, $29, $30)
-            ON CONFLICT DO NOTHING
+            ON CONFLICT (title) DO NOTHING
         `, [
             'GitHub Actions CI/CD Pipeline',
             'I will build a professional CI/CD pipeline with automated testing, Docker build and push to registry.',
@@ -63,7 +63,7 @@ async function seed() {
             VALUES
                 ($1, $2, $3, $4, $5, $6),
                 ($7, $8, $9, $10, $11, $12)
-            ON CONFLICT DO NOTHING
+            ON CONFLICT (github_url) DO NOTHING
         `, [
             'DevOps Portfolio Website',
             'Personal freelancing website built with React, Node.js and PostgreSQL. Deployed with Docker and Helm.',
