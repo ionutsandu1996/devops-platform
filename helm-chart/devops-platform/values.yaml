@@ -2,7 +2,7 @@
 backend:
   image:
     repository: ghcr.io/ionutsandu1996/devops-platform-backend
-    tag: "1.0.5"
+    tag: "1.0.9"
     pullPolicy: Always
   replicaCount: 1
   port: 4000
@@ -21,7 +21,7 @@ backend:
 frontend:
   image:
     repository: ghcr.io/ionutsandu1996/devops-platform-frontend
-    tag: "k8s"
+    tag: "1.0.9"
     pullPolicy: Always
   replicaCount: 1
   port: 80
