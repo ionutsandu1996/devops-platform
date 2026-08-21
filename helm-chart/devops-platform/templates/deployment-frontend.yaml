@@ -25,6 +25,15 @@ spec:
             - containerPort: {{ .Values.frontend.port }}
               protocol: TCP
 
+          # ── BACKEND HOSTNAME ────────────────────────────────
+          # Tells nginx (via envsubst at container startup) which
+          # Service to proxy /api and /health to. Derived from the
+          # actual Helm release name, so it's correct regardless of
+          # what the release is called.
+          env:
+            - name: BACKEND_HOST
+              value: "{{ include "devops-platform.fullname" . }}-backend"
+
           # ── READINESS PROBE ────────────────────────────────
           # Nginx serves / when ready
           readinessProbe:

@@ -1,7 +1,9 @@
-# nginx.conf — Nginx configuration for React SPA
-# BACKEND_HOST is replaced at build time by Dockerfile sed command
-# Docker Compose: backend
-# Kubernetes:     devops-platform-backend
+# nginx.conf.template — Nginx configuration for React SPA
+# BACKEND_HOST is substituted at CONTAINER STARTUP by the official nginx
+# entrypoint (envsubst on /etc/nginx/templates/*.template), from the
+# BACKEND_HOST env var set on the container — not baked in at build time.
+# Docker Compose: backend (compose service name)
+# Kubernetes:     <helm release name>-backend (injected by the chart)
 
 server {
     listen 80;
@@ -19,9 +21,9 @@ server {
     }
 
     # Proxy API requests to the backend service
-    # BACKEND_HOST is replaced at build time
+    # ${BACKEND_HOST} is substituted at container startup (envsubst)
     location /api {
-        proxy_pass http://BACKEND_HOST:4000;
+        proxy_pass http://${BACKEND_HOST}:4000;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -30,7 +32,7 @@ server {
 
     # Proxy health check to backend
     location /health {
-        proxy_pass http://BACKEND_HOST:4000;
+        proxy_pass http://${BACKEND_HOST}:4000;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
     }
