@@ -49,7 +49,7 @@ function AdminDashboard() {
                 <div className="admin-dashboard__header">
                     <div>
                         <h1 className="admin-dashboard__title">Dashboard</h1>
-                        <p className="admin-dashboard__subtitle">Welcome back, Ionut 👋</p>
+                        <p className="admin-dashboard__subtitle">Welcome to OpsOra 👋</p>
                     </div>
                     <button className="admin-dashboard__logout" onClick={handleLogout}>
                         Logout

@@ -19,7 +19,7 @@ function Navbar() {
         <nav className="navbar">
             <div className="navbar__container">
                 <Link to="/" className="navbar__logo">
-                    Ionut Sandu <span className="accent">DevOps</span>
+                    Ops<span className="accent">Ora</span>
                 </Link>
 
                 <ul className="navbar__links">

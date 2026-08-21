@@ -8,7 +8,7 @@ function Footer() {
         <footer className="footer">
             <div className="footer__container">
                 <p className="footer__brand">
-                    Ionut Sandu <span className="accent">DevOps</span>
+                    Ops<span className="accent">Ora</span>
                 </p>
                 <div className="footer__links">
                     <Link to="/services" className="footer__link">Services</Link>
@@ -21,7 +21,7 @@ function Footer() {
                 </div>
             </div>
             <div className="footer__copyright">
-                <p>© {currentYear} Ionut Sandu. All rights reserved.</p>
+                <p>© {currentYear} OpsOra. All rights reserved.</p>
             </div>
         </footer>
     );
