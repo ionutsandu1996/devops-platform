@@ -8,6 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 const pool    = require('../db/pool');
+const auth    = require('../middleware/auth');
 
 // ── GET /api/services ─────────────────────────────────────────────────────────
 // Returns all ACTIVE services ordered by sort_order
@@ -59,7 +60,7 @@ router.get('/:id', async (req, res) => {
 // ── POST /api/services ────────────────────────────────────────────────────────
 // Creates a new service
 // Body: { title, description, icon, price_from, is_active, sort_order }
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const {
         title,
         description,
@@ -101,7 +102,7 @@ router.post('/', async (req, res) => {
 // ── PUT /api/services/:id ─────────────────────────────────────────────────────
 // Updates an existing service
 // Can also be used to toggle is_active without deleting the service
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
 
     if (isNaN(id)) {
@@ -158,7 +159,7 @@ router.put('/:id', async (req, res) => {
 // ── DELETE /api/services/:id ──────────────────────────────────────────────────
 // Permanently deletes a service
 // Consider using PUT with is_active: false instead of deleting
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
 
     if (isNaN(id)) {

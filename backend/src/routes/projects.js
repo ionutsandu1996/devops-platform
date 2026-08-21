@@ -8,9 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 const pool    = require('../db/pool');
-
-// We will uncomment this once we build the auth middleware
-// const auth = require('../middleware/auth');
+const auth    = require('../middleware/auth');
 
 // ── GET /api/projects ─────────────────────────────────────────────────────────
 // Returns all projects ordered by featured first, then sort_order
@@ -73,7 +71,7 @@ router.get('/:id', async (req, res) => {
 // ── POST /api/projects ────────────────────────────────────────────────────────
 // Creates a new project
 // Body: { title, description, tech_stack, github_url, demo_url, image_url, is_featured, sort_order }
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const {
         title,
         description,
@@ -121,7 +119,7 @@ router.post('/', async (req, res) => {
 // ── PUT /api/projects/:id ─────────────────────────────────────────────────────
 // Updates an existing project
 // Sends back the updated row
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
 
     if (isNaN(id)) {
@@ -186,7 +184,7 @@ router.put('/:id', async (req, res) => {
 // ── DELETE /api/projects/:id ──────────────────────────────────────────────────
 // Deletes a project permanently
 // Returns the deleted row as confirmation
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const id = parseInt(req.params.id);
 
     if (isNaN(id)) {
