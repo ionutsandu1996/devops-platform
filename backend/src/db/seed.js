@@ -31,29 +31,29 @@ async function seed() {
                 ($26, $27, $28, $29, $30)
             ON CONFLICT (title) DO NOTHING
         `, [
-            'GitHub Actions CI/CD Pipeline',
-            'I will build a professional CI/CD pipeline with automated testing, Docker build and push to registry.',
-            '🚀', 150, 1,
+            'CI/CD & Release Automation',
+            'Build and improve delivery pipelines with Jenkins, GitHub Actions and Bitbucket, including artifact publishing, approvals and API-driven deployments.',
+            '🚀', 350, 1,
 
-            'Kubernetes Deployment',
-            'I will deploy your application to Kubernetes using Helm charts, with readiness probes, resource limits and ingress configuration.',
-            '☸️', 200, 2,
+            'Kubernetes & Helm Deployments',
+            'Package and deploy applications with reusable Helm charts, environment-specific values, health checks, affinity, ingress and load balancer integration.',
+            '☸️', 500, 2,
 
-            'GitOps with ArgoCD',
-            'I will implement a GitOps workflow using ArgoCD with separate environments, auto-sync policies and rollback strategy.',
-            '🔄', 250, 3,
+            'GitOps with Argo CD',
+            'Set up Argo CD delivery workflows using app-of-apps patterns, automated synchronization and controlled configuration across environments.',
+            '🔄', 450, 3,
 
-            'Helm Chart Development',
-            'I will create production-ready Helm charts with values per environment, secrets management and ingress configuration.',
-            '⛵', 180, 4,
+            'OpenShift Migration & Support',
+            'Support OpenShift modernization and migration work, including application onboarding, deployment configuration and troubleshooting.',
+            '🔴', 600, 4,
 
-            'Jenkins Pipeline',
-            'I will build declarative Jenkins pipelines with shared libraries, approvals, rollback and multi-environment support.',
-            '🔧', 150, 5,
+            'Secrets, Certificates & Traffic',
+            'Configure Kubernetes secrets, Google Secret Manager with External Secrets, cert-manager, DNS, TLS certificates, load balancing and GSLB patterns.',
+            '🔐', 350, 5,
 
-            'OpenShift Support',
-            'I will help you migrate, configure and troubleshoot applications on OpenShift 4.x clusters.',
-            '🔴', 200, 6,
+            'Infrastructure Automation & Troubleshooting',
+            'Automate repeatable operational tasks with Ansible and Bash, and troubleshoot Linux, CI/CD, Kubernetes, OpenShift and deployment issues.',
+            '🛠️', 250, 6,
         ]);
         console.log('  ✓ Services');
 

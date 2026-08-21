@@ -6,7 +6,7 @@ import './Home.css';
 const TECH_BADGES = [
     'Docker', 'Kubernetes', 'Helm',
     'GitHub Actions', 'ArgoCD', 'OpenShift',
-    'Terraform', 'Jenkins',
+    'Ansible', 'Jenkins', 'GCP', 'Bitbucket',
 ];
 
 const STATS = [
