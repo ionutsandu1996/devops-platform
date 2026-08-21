@@ -1,6 +1,6 @@
-// seed.js — Seeds initial data into the database
-// Called automatically from entrypoint.sh on container start
-// ON CONFLICT DO NOTHING = safe to run multiple times
+// seed.js — Creates only the initial admin account when run explicitly.
+// Catalog content is managed from the admin UI and must never be overwritten
+// or reinserted by application restarts or deployments.
 
 const pool = require('./pool');
 
@@ -19,66 +19,6 @@ async function seed() {
         ]);
         console.log('  ✓ Admin user');
 
-        // ── SERVICES ──────────────────────────────────────────
-        await pool.query(`
-            INSERT INTO services (title, description, icon, price_from, sort_order)
-            VALUES
-                ($1,  $2,  $3,  $4,  $5),
-                ($6,  $7,  $8,  $9,  $10),
-                ($11, $12, $13, $14, $15),
-                ($16, $17, $18, $19, $20),
-                ($21, $22, $23, $24, $25),
-                ($26, $27, $28, $29, $30)
-            ON CONFLICT (title) DO NOTHING
-        `, [
-            'CI/CD & Release Automation',
-            'Build and improve delivery pipelines with Jenkins, GitHub Actions and Bitbucket, including artifact publishing, approvals and API-driven deployments.',
-            '🚀', 350, 1,
-
-            'Kubernetes & Helm Deployments',
-            'Package and deploy applications with reusable Helm charts, environment-specific values, health checks, affinity, ingress and load balancer integration.',
-            '☸️', 500, 2,
-
-            'GitOps with Argo CD',
-            'Set up Argo CD delivery workflows using app-of-apps patterns, automated synchronization and controlled configuration across environments.',
-            '🔄', 450, 3,
-
-            'OpenShift Migration & Support',
-            'Support OpenShift modernization and migration work, including application onboarding, deployment configuration and troubleshooting.',
-            '🔴', 600, 4,
-
-            'Secrets, Certificates & Traffic',
-            'Configure Kubernetes secrets, Google Secret Manager with External Secrets, cert-manager, DNS, TLS certificates, load balancing and GSLB patterns.',
-            '🔐', 350, 5,
-
-            'Infrastructure Automation & Troubleshooting',
-            'Automate repeatable operational tasks with Ansible and Bash, and troubleshoot Linux, CI/CD, Kubernetes, OpenShift and deployment issues.',
-            '🛠️', 250, 6,
-        ]);
-        console.log('  ✓ Services');
-
-        // ── PROJECTS ──────────────────────────────────────────
-        await pool.query(`
-            INSERT INTO projects (title, description, tech_stack, github_url, is_featured, sort_order)
-            VALUES
-                ($1, $2, $3, $4, $5, $6),
-                ($7, $8, $9, $10, $11, $12)
-            ON CONFLICT (github_url) DO NOTHING
-        `, [
-            'DevOps Portfolio Website',
-            'Personal freelancing website built with React, Node.js and PostgreSQL. Deployed with Docker and Helm.',
-            'React, Node.js, PostgreSQL, Docker, Helm, GitHub Actions',
-            'https://github.com/ionutsandu1996/devops-platform',
-            true, 1,
-
-            'Medical Clinic App',
-            'Full-stack clinic management system with JWT auth, RBAC, Docker, Helm and GitHub Actions CI/CD.',
-            'Node.js, React, PostgreSQL, Docker, Helm, GitHub Actions',
-            'https://github.com/ionutsandu1996/Medical-clinic-app',
-            true, 2,
-        ]);
-        console.log('  ✓ Projects');
-
         console.log('✅ Seed completed successfully!');
 
     } catch (err) {
@@ -90,7 +30,7 @@ async function seed() {
 module.exports = seed;
 
 // Run directly if called from command line
-// node src/db/seed.js or entrypoint.sh
+// node src/db/seed.js
 if (require.main === module) {
     seed()
         .then(() => process.exit(0))
