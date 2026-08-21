@@ -21,7 +21,7 @@ backend:
 frontend:
   image:
     repository: ghcr.io/ionutsandu1996/devops-platform-frontend
-    tag: "1.0.7"
+    tag: "1.0.8"
     pullPolicy: Always
   replicaCount: 1
   port: 80
